@@ -3,6 +3,8 @@ import { sendMail } from './transporter.js';
 import cors from 'cors';
 import 'dotenv/config';
 
+const port = process.env.PORT || 3001;
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -53,6 +55,6 @@ app.delete('/', (req, res) => {
     res.status(405).json({error: true, message: 'Método não permitido!'});
 });
 
-app.listen(3001, () => {
-    console.log('Running!');
+app.listen(port, () => {
+    console.log(`Running at port ${port}!`);
 });
