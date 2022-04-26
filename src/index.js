@@ -11,7 +11,7 @@ app.use(cors());
 
 app.post('/', async (req, res) => {
 
-    if(!req.body.to || !req.body.subject || !req.body.text){
+    if(!req.body.to){
         res.status(400).json({error: true, message: 'Requisição ruim!'});
         return;
     }
@@ -22,7 +22,7 @@ app.post('/', async (req, res) => {
         from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
         to: req.body.to,
         subject: req.body.subject,
-        text: req.body.text       
+        text: req.body.text
     });
 
     if(mailResponse.accepted){
@@ -38,7 +38,6 @@ app.post('/', async (req, res) => {
     }
 
 });
-
 
 // MÉTODOS NÃO PERMITIDOS
 
