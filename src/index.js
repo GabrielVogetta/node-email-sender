@@ -40,7 +40,7 @@ app.post('/', async (req, res) => {
 });
 
 app.get('/', async (req, res) => {
-    res.status(200).json({error: false, message: 'Olá, eu sou o node email sender! Para enviar um email vá em POST'});
+    res.status(200).json({error: false, message: 'Olá, eu sou o node email sender! Para enviar um email use o método POST'});
 });
 
 // MÉTODOS NÃO PERMITIDOS
