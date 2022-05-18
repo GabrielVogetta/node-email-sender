@@ -8,9 +8,11 @@ const port = process.env.PORT || 3001;
 const app = express();
 app.use(express.json());
 
-app.use(cors({origin: 'null'}));
+app.use(cors({origin: '*'}));
 
 app.post('/', async (req, res) => {
+
+    res.header("Access-Control-Allow-Origin", "*");
 
     if(!req.body.to){
         res.status(400).json({error: true, message: 'Requisição ruim!'});
@@ -41,18 +43,30 @@ app.post('/', async (req, res) => {
 });
 
 app.get('/', async (req, res) => {
+
+    res.header("Access-Control-Allow-Origin", "*");
+
     res.status(200).json({error: false, message: 'Olá, eu sou o node email sender! Para enviar um email use o método POST'});
 });
 
 // MÉTODOS NÃO PERMITIDOS
 
 app.put('/', (req, res) => {
+
+    res.header("Access-Control-Allow-Origin", "*");
+
     res.status(405).json({error: true, message: 'Método não permitido!'});
 });
 app.patch('/', (req, res) => {
+
+    res.header("Access-Control-Allow-Origin", "*");
+
     res.status(405).json({error: true, message: 'Método não permitido!'});
 });
 app.delete('/', (req, res) => {
+
+    res.header("Access-Control-Allow-Origin", "*");
+
     res.status(405).json({error: true, message: 'Método não permitido!'});
 });
 
