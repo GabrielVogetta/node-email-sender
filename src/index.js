@@ -14,7 +14,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.post('/', async (req, res) => {
+app.post('/', async (req, res, next) => {
 
     if(!req.body.to){
         res.status(400).json({error: true, message: 'Requisição ruim!'});
@@ -42,22 +42,30 @@ app.post('/', async (req, res) => {
         });
     }
 
+    next();
 });
 
-app.get('/', async (req, res) => {
+app.get('/', async (req, res, next) => {
     res.status(200).json({error: false, message: 'Olá, eu sou o node email sender! Para enviar um email use o método POST'});
+
+    next();
 });
 
 // MÉTODOS NÃO PERMITIDOS
 
 app.put('/', (req, res) => {
     res.status(405).json({error: true, message: 'Método não permitido!'});
+
+    next();
 });
-app.patch('/', (req, res) => {
+app.patch('/', (req, res, next) => {
     res.status(405).json({error: true, message: 'Método não permitido!'});
+
+    next();
 });
-app.delete('/', (req, res) => {
+app.delete('/', (req, res, next) => {
     res.status(405).json({error: true, message: 'Método não permitido!'});
+    next();
 });
 
 app.listen(port, () => {
