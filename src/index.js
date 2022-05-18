@@ -8,13 +8,9 @@ const port = process.env.PORT || 3001;
 const app = express();
 app.use(express.json());
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(cors({origin: 'null'}));
 
-app.post('/', async (req, res, next) => {
+app.post('/', async (req, res) => {
 
     if(!req.body.to){
         res.status(400).json({error: true, message: 'Requisição ruim!'});
@@ -42,30 +38,22 @@ app.post('/', async (req, res, next) => {
         });
     }
 
-    next();
 });
 
-app.get('/', async (req, res, next) => {
+app.get('/', async (req, res) => {
     res.status(200).json({error: false, message: 'Olá, eu sou o node email sender! Para enviar um email use o método POST'});
-
-    next();
 });
 
 // MÉTODOS NÃO PERMITIDOS
 
 app.put('/', (req, res) => {
     res.status(405).json({error: true, message: 'Método não permitido!'});
-
-    next();
 });
-app.patch('/', (req, res, next) => {
+app.patch('/', (req, res) => {
     res.status(405).json({error: true, message: 'Método não permitido!'});
-
-    next();
 });
-app.delete('/', (req, res, next) => {
+app.delete('/', (req, res) => {
     res.status(405).json({error: true, message: 'Método não permitido!'});
-    next();
 });
 
 app.listen(port, () => {
