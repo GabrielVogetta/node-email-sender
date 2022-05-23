@@ -28,6 +28,8 @@ app.post('/', async (req, res) => {
         text: req.body.text
     });
 
+    console.log(mailResponse);
+
     if(mailResponse.accepted){
         res.status(201).json({
             error: null, message: 'Email enviado!', 
