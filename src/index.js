@@ -1,5 +1,5 @@
 import express from 'express';
-import { sendMail } from './transporter.js';
+import sendEmail from './transporter.js';
 import cors from 'cors';
 import 'dotenv/config';
 
@@ -21,27 +21,25 @@ app.post('/', async (req, res) => {
 
     // SE ESTIVER TUDO CORRETO
 
-    const mailResponse = await sendMail({
-        from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
-        to: req.body.to,
-        subject: req.body.subject,
-        text: req.body.text
-    });
-
-    console.log(mailResponse);
-
-    if(mailResponse.accepted){
+    try{
+        const emailReq = await sendEmail({
+            to: req.body.to,
+            subject: req.body.subject,
+            text: req.body.text,
+        });
+        
         res.status(201).json({
             error: null, message: 'Email enviado!', 
-            mailResponse: mailResponse
+            mailResponse: emailReq
         });
-    }else{
+
+    } catch (error){
+        
         res.status(500).json({
             error: true, message: 'Email não enviado! Tente novamente mais tarde', 
-            mailResponse: mailResponse
+            mailResponse: error
         });
     }
-
 });
 
 app.get('/', async (req, res) => {
