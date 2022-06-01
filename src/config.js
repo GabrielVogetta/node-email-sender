@@ -1,9 +1,16 @@
+import 'dotenv/config';
+
 export default {
-    fromName : 'React Email Sender',
-    fromEmail: 'react.email.sender@gmail.com',
-    authUser: 'react.email.sender@gmail.com',
-    clientId: '1071412631172-bgds3rpcsjdv6mhp8kg5b79qaido771d.apps.googleusercontent.com',
-    clientSecret: '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',
-    redirectUri: 'https://developers.google.com/oauthplayground',
-    refreshToken: '1//04h2sOZ412kh_CgYIARAAGAQSNwF-L9Ir_VmydEV2kXIX2KL66FjYMOJu5jCIf6OyBf5UsuxXxhrlkdtn3qzcLAJPMw_Dgvpa1n8'
+    server: {
+        port: process.env.PORT || 3001,
+    },
+    api : {
+        fromName : process.env.FROM_NAME,
+        fromEmail: process.env.FROM_EMAIL,
+        authUser: process.env.AUTH_USER,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        redirectUri: process.env.REDIRECT_URI,
+        refreshToken: process.env.REFRESH_TOKEN,
+    }
 };

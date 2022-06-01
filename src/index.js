@@ -1,75 +1,127 @@
-import express from 'express';
-import sendEmail from './transporter.js';
-import cors from 'cors';
-import 'dotenv/config';
+// import sendEmail from './transporter.js';
+// import cors from 'cors';
+import http from 'http';
+import config from './config.js';
 
-const port = process.env.PORT || 3001;
+const server = http.createServer(async (req, res) => {
 
-const app = express();
-app.use(express.json());
-
-app.use(cors({origin: '*'}));
-
-app.post('/', async (req, res) => {
-
-    res.header("Access-Control-Allow-Origin", "*");
-
-    if(!req.body.to){
-        res.status(400).json({error: true, message: 'Requisição ruim!'});
-        return;
-    }
-
-    // SE ESTIVER TUDO CORRETO
-
-    try{
-        const emailReq = await sendEmail({
-            to: req.body.to,
-            subject: req.body.subject,
-            text: req.body.text,
+    if(req.method !== 'POST' && req.method !== 'GET'){
+        res.writeHead(405, 'Method Not Allowed', {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         });
         
-        res.status(201).json({
-            error: null, message: 'Email enviado!', 
-            mailResponse: emailReq
+        const json = JSON.stringify({
+            status: 405,
+            error: true,
+            message: 'Método não permitido!',
         });
 
-    } catch (error){
-        
-        res.status(500).json({
-            error: true, message: 'Email não enviado! Tente novamente mais tarde', 
-            mailResponse: error
+        res.end(json);
+    }
+
+    if(req.method === 'GET'){
+        res.writeHead(200, 'OK', {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         });
+        
+        const json = JSON.stringify({
+            status: 200,
+            error: null,
+            message: 'Olá, eu sou o node email sender! Para enviar um email use o método POST',
+        });
+
+        res.end(json);
+    }
+
+    if(req.method === 'POST'){
+        // if(!req.body || !req.body.to){
+        //     res.writeHead(400, 'Bad Request', {
+        //         'Content-Type': 'application/json',
+        //         'Access-Control-Allow-Origin': '*'
+        //     }); 
+
+        //     const json = JSON.stringify({
+        //         status: 400,
+        //         error: true,
+        //         message: 'Má requisição'
+        //     });
+
+        //     res.end(json);
+
+        //     return;
+        // }
+
+        res.writeHead(201, 'Created', {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        });
+
+        const json = JSON.stringify({
+            status: 201,
+            error: null,
+            message: 'Email enviado!',
+        });
+
+        res.end(json);
+
+        // let body = '';
+
+        // req.on('data', chunk => {
+        //     console.log(chunk);
+        // });
+
+        // req.on('end', () => {
+        //     const {to, subject, text} = JSON.parse(body);
+
+        //     const json = JSON.stringify({
+        //         status: 201,
+        //         error: null,
+        //         message: 'Email enviado!',
+        //         to: to,
+        //         subject: subject,
+        //         text: text
+        //     });
+
+        //     console.log(json);
+
+        //     //----------------------------------------//
+        //     // const buffers = [];
+
+        //     // for await (const chunk of req) {
+        //     //     buffers.push(chunk);
+        //     // }
+
+        //     // const data = Buffer.concat(buffers).toString();
+
+        //     // console.log(JSON.parse(data).todo); // 'Buy the milk'
+        //     // res.end();
+
+        //     res.end(json);
+        // });
+
+        // try{
+        //     const emailReq = await sendEmail({
+        //         to: req.body.to,
+        //         subject: req.body.subject,
+        //         text: req.body.text,
+        //     });
+            
+        //     res.status(201).json({
+        //         error: null, message: 'Email enviado!', 
+        //         mailResponse: emailReq
+        //     });
+    
+        // } catch (error){
+            
+        //     res.status(500).json({
+        //         error: true, message: 'Email não enviado! Tente novamente mais tarde', 
+        //         mailResponse: error
+        //     });
+        // }
+
     }
 });
 
-app.get('/', async (req, res) => {
-
-    res.header("Access-Control-Allow-Origin", "*");
-
-    res.status(200).json({error: false, message: 'Olá, eu sou o node email sender! Para enviar um email use o método POST'});
-});
-
-// MÉTODOS NÃO PERMITIDOS
-
-app.put('/', (req, res) => {
-
-    res.header("Access-Control-Allow-Origin", "*");
-
-    res.status(405).json({error: true, message: 'Método não permitido!'});
-});
-app.patch('/', (req, res) => {
-
-    res.header("Access-Control-Allow-Origin", "*");
-
-    res.status(405).json({error: true, message: 'Método não permitido!'});
-});
-app.delete('/', (req, res) => {
-
-    res.header("Access-Control-Allow-Origin", "*");
-
-    res.status(405).json({error: true, message: 'Método não permitido!'});
-});
-
-app.listen(port, () => {
-    console.log(`Running at port ${port}!`);
-});
+server.listen(config.server.port);
