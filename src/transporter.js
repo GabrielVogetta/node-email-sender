@@ -1,11 +1,11 @@
 import nodemailer from 'nodemailer';
 import {google} from 'googleapis';
-import config from './config.js';
+import config from './config/index.js';
 
 const oAuth2Client = new google.auth.OAuth2(config.api.clientId, config.api.clientSecret, config.api.redirectUri);
 oAuth2Client.setCredentials({refresh_token: config.api.refreshToken});
 
-export default async function sendEmail({to, subject, text}){
+async function sendEmail({to, subject, text}){
     try {
         const accessToken = await oAuth2Client.getAccessToken();
         
@@ -34,4 +34,8 @@ export default async function sendEmail({to, subject, text}){
     } catch (error) {
         return error;
     }
+};
+
+export default {
+    sendEmail
 };
