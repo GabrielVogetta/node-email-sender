@@ -2,7 +2,6 @@ import 'dotenv/config';
 
 export default {
     app: {
-        host: process.env.PORT ? 'node-email-sender-gves.herokuapp.com' : '127.0.0.1',
         port: process.env.PORT || 3001,
     },
     api : {
