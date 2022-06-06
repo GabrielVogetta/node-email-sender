@@ -1,4 +1,4 @@
-import transporter from '../transporter.js';
+import transporter from '../api/transporter.js';
 import methodNotAllowed from './methodNotAllowed.js';
 
 const badRequest = (res) => {
