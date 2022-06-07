@@ -41,7 +41,7 @@ const sendEmail = (req, res) => {
                 });
                 
                 if(emailReq.accepted){
-                    res.writeHead(201, 'Created', {
+                    res.writeHead(201, 'Ok', {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*'
                     });
