@@ -5,7 +5,8 @@ import logRequest from '../utils/logRequest.js';
 
 const routes = (req, res) => {
     const {headers, method, url} = req;
-    logRequest(method, url, headers.host, headers['user-agent']);
+
+    logRequest(method, url, headers.host, headers['user-agent']); 
 
     if(req.url === '/'){
         return helloWorld(req, res);

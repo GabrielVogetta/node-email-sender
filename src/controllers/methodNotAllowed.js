@@ -1,8 +1,8 @@
 const methodNotAllowed = (res) => {
-    res.writeHead(405, 'Method Not Allowed', {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-    });
+    
+    res.setHeader('Content-Type', 'application/json');
+
+    res.writeHead(405);
 
     res.end(JSON.stringify({
         status: 405,

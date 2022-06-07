@@ -2,10 +2,9 @@ import transporter from '../api/transporter.js';
 import methodNotAllowed from './methodNotAllowed.js';
 
 const badRequest = (res) => {
-    res.writeHead(400, 'Bad Request!', {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-    });
+    
+    res.setHeader('Content-Type', 'application/json');
+    res.writeHead(400);
 
     return res.end(JSON.stringify({
         status: 400,
@@ -15,7 +14,18 @@ const badRequest = (res) => {
 };
 
 const sendEmail = (req, res) => {
-    
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Request-Method', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST');
+	res.setHeader('Access-Control-Allow-Headers', '*');
+
+	if(req.method === 'OPTIONS') {
+		res.writeHead(200);
+		res.end();
+		return;
+	}
+
     if(req.method !== 'POST'){
         return methodNotAllowed(res);
     }
@@ -41,27 +51,25 @@ const sendEmail = (req, res) => {
                 });
                 
                 if(emailReq.accepted){
-                    res.writeHead(201, 'Ok', {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*'
-                    });
+
+                    res.setHeader('Content-Type', 'application/json');
+                    res.writeHead(201);
 
                     return res.end(JSON.stringify({
                         status: 201,
                         error: null,
-                        message: 'Created',
+                        message: 'Email Enviado!',
                         emailResponse: emailReq
                     }));
                 }else{
-                    res.writeHead(500, 'Internal Server Error', {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*'
-                    });
+
+                    res.setHeader('Content-Type', 'application/json');
+                    res.writeHead(500);
                     
                     return res.end(JSON.stringify({
                         status: 500,
                         error: true,
-                        message: 'Internal Server Error'
+                        message: 'Houve um erro, tente novamente mais tarde!'
                     }));
                 }
 
