@@ -1,4 +1,4 @@
-const notFound = (req, res) => {
+const notFound = (req, res) => {    
     res.writeHead(404, 'Not Found!', {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
